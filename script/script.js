@@ -11,12 +11,15 @@ function criarCart(item) {
   const burguerElement = elSpan.parentElement.parentElement;
   const burguerImg = burguerElement.querySelector('.burguer-img img').getAttribute('src');
   const price = +elSpan.innerText.slice(3).replace(',', '.');
-  console.log(burguerImg)
-  subTotal += price;
+  subTotal = subTotal + price;
 
 
-  if (cart.childElementCount === 1 - 1) {
+  if (cart.childElementCount === 0 && window.innerWidth > 900) {
     aside.style.width = '235px'
+  }
+
+  if( cart.childElementCount === 0 && window.innerWidth < 900 ) {
+    aside.style.width = '100%'
   }
 
   const div = document.createElement('div');
@@ -67,7 +70,6 @@ window.addEventListener('click', (e) => {
   e.preventDefault();
   const el = e.target;
   if (el.classList.contains('fa-trash')) {
-    console.log(el.parentElement.parentElement);
     const elPrincipal = el.parentElement.parentElement;
     const price = +elPrincipal.querySelector('span').innerHTML;
     subTotal = subTotal - price;
@@ -78,5 +80,14 @@ window.addEventListener('click', (e) => {
       aside.style.width = '0px';
     }
   }
+})
+
+document.querySelector('.btn-close').addEventListener('click', () => {
+  document.querySelectorAll('.burguer-cart').forEach((item) => {
+    item.remove();
+  });
+  subTotal = 0;
+  subTotalPrice.innerHTML = `R$ ${subTotal.toFixed(2).replace('.', ',')}`;
+  aside.style.width = '0px';
 })
 
